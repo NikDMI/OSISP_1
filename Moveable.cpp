@@ -49,9 +49,7 @@ namespace LAB1 {
 
 	///////////////////////   MouseMoveBehavior   ////////////////////////////
 
-	MouseMoveBehavior::MouseMoveBehavior(RECT clientRect, RECT objectRect) :MoveBehavior{clientRect,objectRect} {
-
-	}
+	MouseMoveBehavior::MouseMoveBehavior(RECT clientRect, RECT objectRect) :MoveBehavior{clientRect,objectRect} {}
 
 	void MouseMoveBehavior::CaptureMouseCoord() {
 		isCapture = true;

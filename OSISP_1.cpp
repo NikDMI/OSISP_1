@@ -2,6 +2,8 @@
 #include <string>
 #include "Painter.h"
 #include "Moveable.h"
+#include "Sprite.h"
+#include <vector>
 
 using namespace LAB1;
 
@@ -39,6 +41,36 @@ const UINT objectW = 100;
 const UINT objectH = 100;
 const RECT startObjectRect{ 0,0,objectW,objectH };
 bool isCapture = false;
+
+class ExampleFactory {
+private:
+	Painter* m_painter = nullptr;
+	//BITMAP_HANDLE m_bmp = INVALID_BITMAP_HANDLE;
+	MoveBehavior* m_currentMoveBehavior;
+	//MouseMoveBehavior* m_mouseMoveBehavior;
+	HWND m_hWnd;
+	std::vector<Sprite*> m_sprites;
+	enum MoveBehaviors:char {Mouse = 0};
+	std::vector<MoveBehavior*> m_moveBehaviors{1};
+public:
+	enum class PainterType {D2D1_Painter};
+	enum Sprites:char {Picture = 0};
+	ExampleFactory(HWND hWnd, PainterType painterType = PainterType::D2D1_Painter) :m_hWnd{hWnd} {
+		switch (painterType) {
+
+		case PainterType::D2D1_Painter:
+			m_painter = new PainterD2D1{ hWnd };
+			break;
+		}
+		//add move behaviours
+		RECT clientRect;
+		GetClientRect(hWnd, &clientRect);
+		m_moveBehaviors[MoveBehaviors::Mouse] = new MouseMoveBehavior(clientRect, startObjectRect);
+		m_currentMoveBehavior = m_moveBehaviors[MoveBehaviors::Mouse];
+		//add sprites
+		//m_sprites.push_back(new )
+	};
+};
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 	static Painter* painter;

@@ -4,7 +4,7 @@
 #include <Windows.h>
 
 namespace LAB1 {
-	using _time = uint32_t;
+	//using _time = uint32_t;
 
 	class Exception {
 	protected:

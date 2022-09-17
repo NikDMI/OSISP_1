@@ -10,6 +10,7 @@ namespace LAB1 {
 
 	using COLOR = D2D1_COLOR_F;
 	using BITMAP_HANDLE = int;
+	const BITMAP_HANDLE INVALID_BITMAP_HANDLE = -1;
 
 	/// <summary>
 	/// Abstraction to paint device
@@ -19,6 +20,7 @@ namespace LAB1 {
 		virtual void StartDraw() = 0;
 		virtual void EndDraw() = 0;
 		virtual void Resize(uint32_t width, uint32_t height) = 0;
+		//virtual void Repaint() = 0;
 
 		virtual BITMAP_HANDLE LoadImageFromFile(std::wstring fileName) = 0;
 
@@ -45,6 +47,7 @@ namespace LAB1 {
 		void SetBrushColor(COLOR color) override;
 		void Rectangle(RECT rect) override;
 		void Resize(uint32_t width, uint32_t height) override;
+		//void Repaint() override;
 		BITMAP_HANDLE LoadImageFromFile(std::wstring fileName) override;
 		void DrawImage(BITMAP_HANDLE bmpIndex, RECT distRect) override;
 	};

@@ -43,7 +43,6 @@ namespace LAB1 {
 		void CaptureMouseCoord();
 		void UncaptureMouseCoord();
 		void RefreshRectCoords() override;
-		//void Move(int32_t dx, int32_t dy);
 	};
 
 }

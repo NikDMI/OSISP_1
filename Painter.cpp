@@ -101,8 +101,13 @@ namespace LAB1 {
 		//this->rootFileName = FileName;
 		return max_free_handle++;
 	}
-	
 
+	/*
+	void PainterD2D1::Repaint() {
+		InvalidateRect(m_hWnd, NULL, FALSE);
+	}
+	*/
+	
 	void PainterD2D1::DrawImage(BITMAP_HANDLE bmpIndex, RECT distRect) {
 		auto bmpIter = loadedImages.find(bmpIndex);
 		if (bmpIter != loadedImages.end()) {
