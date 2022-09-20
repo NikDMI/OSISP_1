@@ -116,4 +116,8 @@ namespace LAB1 {
 		}
 	}
 
+	void PainterD2D1::InvalidateDrawArea() {
+		InvalidateRect(m_hWnd, NULL, FALSE);
+	}
+
 }

@@ -143,12 +143,14 @@
     <ClCompile Include="OSISP_1.cpp" />
     <ClCompile Include="Painter.cpp" />
     <ClCompile Include="Sprite.cpp" />
+    <ClCompile Include="Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Config.h" />
     <ClInclude Include="Moveable.h" />
     <ClInclude Include="Painter.h" />
     <ClInclude Include="Sprite.h" />
+    <ClInclude Include="Timer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

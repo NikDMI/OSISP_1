@@ -27,6 +27,7 @@ namespace LAB1 {
 		virtual void SetBrushColor(COLOR color) = 0;
 		virtual void Rectangle(RECT rect) = 0;
 		virtual void DrawImage(BITMAP_HANDLE bmpIndex,RECT distRect) = 0;
+		virtual void InvalidateDrawArea() = 0;
 	};
 
 
@@ -50,5 +51,6 @@ namespace LAB1 {
 		//void Repaint() override;
 		BITMAP_HANDLE LoadImageFromFile(std::wstring fileName) override;
 		void DrawImage(BITMAP_HANDLE bmpIndex, RECT distRect) override;
+		void InvalidateDrawArea() override;
 	};
 }

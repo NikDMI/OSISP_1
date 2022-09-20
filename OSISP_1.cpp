@@ -12,6 +12,7 @@ const std::wstring CLASS_NAME = L"Class1";
 LRESULT CALLBACK WndProc(HWND,UINT,WPARAM,LPARAM);
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdLine) {
+	InitApplication();
 	WNDCLASSEX wc;
 	wc.cbSize = sizeof(WNDCLASSEX);
 	wc.style = CS_HREDRAW | CS_VREDRAW;
@@ -37,24 +38,25 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	return 0;
 }
 
-const UINT objectW = 100;
-const UINT objectH = 100;
+const UINT objectW = 300;
+const UINT objectH = 200;
 const RECT startObjectRect{ 0,0,objectW,objectH };
 bool isCapture = false;
 
 class ExampleFactory {
 private:
 	Painter* m_painter = nullptr;
-	//BITMAP_HANDLE m_bmp = INVALID_BITMAP_HANDLE;
 	MoveBehavior* m_currentMoveBehavior;
-	//MouseMoveBehavior* m_mouseMoveBehavior;
 	HWND m_hWnd;
+
 	std::vector<Sprite*> m_sprites;
-	enum MoveBehaviors:char {Mouse = 0};
-	std::vector<MoveBehavior*> m_moveBehaviors{1};
+
+	enum MoveBehaviors:char {Mouse = 0, AutoMove};
+	std::vector<MoveBehavior*> m_moveBehaviors{2};
 public:
 	enum class PainterType {D2D1_Painter};
 	enum Sprites:char {Picture = 0};
+
 	ExampleFactory(HWND hWnd, PainterType painterType = PainterType::D2D1_Painter) :m_hWnd{hWnd} {
 		switch (painterType) {
 
@@ -66,10 +68,22 @@ public:
 		RECT clientRect;
 		GetClientRect(hWnd, &clientRect);
 		m_moveBehaviors[MoveBehaviors::Mouse] = new MouseMoveBehavior(clientRect, startObjectRect);
-		m_currentMoveBehavior = m_moveBehaviors[MoveBehaviors::Mouse];
+		m_moveBehaviors[MoveBehaviors::AutoMove] = new AutoMoveBehavior(clientRect, startObjectRect);
+		m_currentMoveBehavior = m_moveBehaviors[MoveBehaviors::AutoMove];
 		//add sprites
 		//m_sprites.push_back(new )
 	};
+
+	void Draw() {
+		m_painter->StartDraw();
+		m_painter->SetBrushColor({ 0.5,0.2,0.3,1.0 });
+
+		m_currentMoveBehavior->RefreshRectCoords();
+		m_painter->Rectangle(m_currentMoveBehavior->GetObjectRect());
+		//m_painter->DrawImage(bmp, m_currentMoveBehavior->GetObjectRect());
+		m_painter->EndDraw();
+		m_painter->InvalidateDrawArea();
+	}
 };
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
@@ -79,6 +93,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 	static MouseMoveBehavior* mouseMoveBehavior;
 	RECT clientRect;
 
+	static ExampleFactory* applicationFactory;
+
 	switch (uMsg) {
 	case WM_CREATE:
 		painter = new PainterD2D1{ hWnd };
@@ -86,6 +102,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 		GetClientRect(hWnd, &clientRect);
 		mouseMoveBehavior = new MouseMoveBehavior(clientRect, startObjectRect);
 		currentMoveBehavior = mouseMoveBehavior;
+
+		applicationFactory = new ExampleFactory(hWnd);
 		break;
 
 	case WM_SIZE:
@@ -93,13 +111,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 		break;
 
 	case WM_PAINT:
-		painter->StartDraw();
-		painter->SetBrushColor({ 0.5,0.2,0.3,1.0 });
-		painter->Rectangle({ 0,0,100,100 });
-
-		currentMoveBehavior->RefreshRectCoords();
-		painter->DrawImage(bmp, currentMoveBehavior->GetObjectRect());
-		painter->EndDraw();
+		applicationFactory->Draw();
 		break;
 
 	case WM_LBUTTONDOWN:

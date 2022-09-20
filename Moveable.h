@@ -1,6 +1,7 @@
 #pragma once
 #include "Config.h"
 #include <Windows.h>
+#include "Timer.h"
 
 namespace LAB1 {
 	class ExceptionBadSize :public Exception {
@@ -43,6 +44,22 @@ namespace LAB1 {
 		void CaptureMouseCoord();
 		void UncaptureMouseCoord();
 		void RefreshRectCoords() override;
+	};
+
+	class AutoMoveBehavior : public MoveBehavior {
+	private:
+		double m_maxVerticalSpeed = 1000.0f;//speed per second
+		double m_maxHorizontalSpeed = 1000.0f;
+		double m_verticalSpeed = m_maxVerticalSpeed;//speed per second
+		double m_horizontalSpeed = m_maxHorizontalSpeed;
+		Timer timer{};
+
+		void GenerateNewSpeedValues(ClipResult clipping);
+	public:
+		AutoMoveBehavior(RECT clientRect, RECT objectRect);
+		void RefreshRectCoords() override;
+		void StartMoving();
+		void StopMoving();
 	};
 
 }

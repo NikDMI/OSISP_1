@@ -1,6 +1,7 @@
 #pragma once
 #include <cstdint>
 #include <string>
+#include <ctime>
 #include <Windows.h>
 
 namespace LAB1 {
@@ -20,4 +21,8 @@ namespace LAB1 {
 	public:
 		ExceptionBadArgs() :Exception{ L"Invalid args" } {}
 	};
+
+	inline void InitApplication() {
+		srand(time(NULL));
+	}
 }
