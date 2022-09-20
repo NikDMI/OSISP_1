@@ -2,10 +2,8 @@
 
 namespace LAB1 {
 	MoveBehavior::MoveBehavior(RECT clientRect, RECT objectRect) :m_ClientRect{ clientRect }, m_ObjectRect{objectRect} {
+		CheckObjectRect(objectRect);
 		if (!isSuitableSize()) throw ExceptionBadSize{};
-		m_ObjectRectHeight = objectRect.bottom - objectRect.top;
-		m_ObjectRectWidth = objectRect.right - objectRect.left;
-		if (m_ObjectRectHeight <= 0 || m_ObjectRectWidth <= 0) throw ExceptionBadArgs{};
 	}
 
 	MoveBehavior::~MoveBehavior() {
@@ -14,6 +12,18 @@ namespace LAB1 {
 	bool MoveBehavior::isSuitableSize() {
 		return m_ObjectRect.left>=m_ClientRect.left && m_ObjectRect.top>=m_ClientRect.top &&
 			m_ObjectRect.right<=m_ClientRect.right && m_ObjectRect.bottom<=m_ClientRect.bottom;
+	}
+
+	void MoveBehavior::CheckObjectRect(RECT objectRect) {
+		uint32_t rectHeight = objectRect.bottom - objectRect.top;
+		uint32_t rectWidth = objectRect.right - objectRect.left;
+		uint32_t windowHeight = m_ClientRect.bottom - m_ClientRect.top;
+		uint32_t windowWidth = m_ClientRect.right - m_ClientRect.left;
+		if (rectHeight <= 0 || rectWidth <= 0 || rectHeight> windowHeight || rectWidth>windowWidth) throw ExceptionBadArgs{};
+		m_ObjectRectHeight = rectHeight;
+		m_ObjectRectWidth = rectWidth;
+		m_ObjectRect = objectRect;
+
 	}
 
 	MoveBehavior::ClipResult MoveBehavior::SetValidObjectRect() {
@@ -43,6 +53,11 @@ namespace LAB1 {
 			}
 		}
 		return clipRes;
+	}
+
+	void MoveBehavior::SetObjectRect(RECT rect) {
+		CheckObjectRect(rect);
+		SetValidObjectRect();
 	}
 
 

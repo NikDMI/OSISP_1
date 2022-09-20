@@ -69,10 +69,32 @@ public:
 		GetClientRect(hWnd, &clientRect);
 		m_moveBehaviors[MoveBehaviors::Mouse] = new MouseMoveBehavior(clientRect, startObjectRect);
 		m_moveBehaviors[MoveBehaviors::AutoMove] = new AutoMoveBehavior(clientRect, startObjectRect);
+		((AutoMoveBehavior*)m_moveBehaviors[MoveBehaviors::AutoMove])->StartMoving();
 		m_currentMoveBehavior = m_moveBehaviors[MoveBehaviors::AutoMove];
 		//add sprites
 		//m_sprites.push_back(new )
 	};
+
+	void CaptureMouse() {
+		if (dynamic_cast<AutoMoveBehavior*>(m_currentMoveBehavior)) {
+			((AutoMoveBehavior*)m_currentMoveBehavior)->StopMoving();
+		}
+		MoveBehavior* lastMoveBehaviour = m_currentMoveBehavior;
+		m_currentMoveBehavior = m_moveBehaviors[MoveBehaviors::Mouse];
+		m_currentMoveBehavior->SetObjectRect(lastMoveBehaviour->GetObjectRect());
+		((MouseMoveBehavior*)m_currentMoveBehavior)->CaptureMouseCoord();
+	}
+
+	void ReleaseCapture() {
+		if (dynamic_cast<MouseMoveBehavior*>(m_currentMoveBehavior)) {
+			((MouseMoveBehavior*)m_currentMoveBehavior)->UncaptureMouseCoord();
+		}
+		MoveBehavior* lastMoveBehaviour = m_currentMoveBehavior;
+		m_currentMoveBehavior = m_moveBehaviors[MoveBehaviors::AutoMove];
+		m_currentMoveBehavior->SetObjectRect(lastMoveBehaviour->GetObjectRect());
+		((AutoMoveBehavior*)m_currentMoveBehavior)->StartMoving();
+		m_painter->InvalidateDrawArea();
+	}
 
 	void Draw() {
 		m_painter->StartDraw();
@@ -116,8 +138,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 
 	case WM_LBUTTONDOWN:
 		SetCapture(hWnd);
-		currentMoveBehavior = mouseMoveBehavior;
-		mouseMoveBehavior->CaptureMouseCoord();
+		applicationFactory->CaptureMouse();
 		isCapture = true;
 		break;
 
@@ -128,8 +149,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 		break;
 
 	case WM_LBUTTONUP:
-		currentMoveBehavior = mouseMoveBehavior;/////
-		mouseMoveBehavior->UncaptureMouseCoord();
+		applicationFactory->ReleaseCapture();
 		isCapture = false;
 		ReleaseCapture();
 		break;

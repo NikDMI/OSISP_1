@@ -16,6 +16,7 @@ namespace LAB1 {
 	class MoveBehavior {
 	private:
 		bool isSuitableSize();
+		void CheckObjectRect(RECT objectRect);
 		uint32_t m_ObjectRectWidth;
 		uint32_t m_ObjectRectHeight;
 	protected:
@@ -30,7 +31,8 @@ namespace LAB1 {
 		MoveBehavior(RECT clientRect, RECT objectRect);
 		virtual ~MoveBehavior();
 		virtual void RefreshRectCoords() = 0;
-		virtual const RECT& GetObjectRect() const { return m_ObjectRect; }
+		const RECT& GetObjectRect() const { return m_ObjectRect; }
+		void SetObjectRect(RECT rect);
 	};
 
 
@@ -48,8 +50,8 @@ namespace LAB1 {
 
 	class AutoMoveBehavior : public MoveBehavior {
 	private:
-		double m_maxVerticalSpeed = 1000.0f;//speed per second
-		double m_maxHorizontalSpeed = 1000.0f;
+		double m_maxVerticalSpeed = 700.0f;//speed per second
+		double m_maxHorizontalSpeed = 700.0f;
 		double m_verticalSpeed = m_maxVerticalSpeed;//speed per second
 		double m_horizontalSpeed = m_maxHorizontalSpeed;
 		Timer timer{};
