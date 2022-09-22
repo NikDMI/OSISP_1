@@ -48,7 +48,6 @@ namespace LAB1 {
 		void SetBrushColor(COLOR color) override;
 		void Rectangle(RECT rect) override;
 		void Resize(uint32_t width, uint32_t height) override;
-		//void Repaint() override;
 		BITMAP_HANDLE LoadImageFromFile(std::wstring fileName) override;
 		void DrawImage(BITMAP_HANDLE bmpIndex, RECT distRect) override;
 		void InvalidateDrawArea() override;

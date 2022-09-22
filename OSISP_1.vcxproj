@@ -146,6 +146,8 @@
     <ClCompile Include="OSISP_1.cpp" />
     <ClCompile Include="Painter.cpp" />
     <ClCompile Include="Sprite.cpp" />
+    <ClCompile Include="Sprites\Image.cpp" />
+    <ClCompile Include="Sprites\RectangleSprite.cpp" />
     <ClCompile Include="Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -156,6 +158,8 @@
     <ClInclude Include="MoveBehavior\StaticMoveBehaviour.h" />
     <ClInclude Include="Painter.h" />
     <ClInclude Include="Sprite.h" />
+    <ClInclude Include="Sprites\ImageSprite.h" />
+    <ClInclude Include="Sprites\RectangleSprite.h" />
     <ClInclude Include="Timer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

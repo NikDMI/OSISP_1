@@ -97,6 +97,9 @@ namespace LAB1 {
 			}
 			
 		}
+		else {
+			throw Exception(L"IWICFormatConverter: bad args");
+		}
 		//WICFactory->Release();
 		//this->rootFileName = FileName;
 		return max_free_handle++;

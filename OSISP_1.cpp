@@ -5,6 +5,8 @@
 #include "MoveBehavior/MouseMoveBehaviour.h"
 #include "MoveBehavior/AutoMoveBehaviour.h"
 #include "MoveBehavior/StaticMoveBehaviour.h"
+#include "Sprites/RectangleSprite.h"
+#include "Sprites/ImageSprite.h"
 #include "Timer.h"
 #include "Sprite.h"
 #include <vector>
@@ -14,6 +16,7 @@ using namespace LAB1;
 const std::wstring CLASS_NAME = L"Class1";
 const INT KEY_MOVE_OFFSET = 5;
 const double WHEEL_SENSETIVE = 40; //number of pixels to "rotate" wheel
+
 
 LRESULT CALLBACK WndProc(HWND,UINT,WPARAM,LPARAM);
 
@@ -55,7 +58,8 @@ private:
 	MoveBehavior* m_currentMoveBehavior;
 	HWND m_hWnd;
 
-	std::vector<Sprite*> m_sprites;
+	std::vector<Sprite*> m_sprites{ 2 };
+	Sprite* m_currentSprite;
 
 	enum MoveBehaviors:char {Mouse = 0, AutoMove, StaticMove};
 	std::vector<MoveBehavior*> m_moveBehaviors{3};
@@ -63,6 +67,8 @@ private:
 	const double MAX_SLEEP_TIME_IN_SECONDS = 1.000f;
 	bool m_isStaticMove = false;
 	LONGLONG m_staticMoveStartTime;
+
+	const std::wstring TEST_IMAGE_FILE = L"Picture.png";
 
 	void ChangeMoveBehaviour(MoveBehaviors index) {
 		MoveBehavior* lastMoveBehaviour = m_currentMoveBehavior;
@@ -98,7 +104,7 @@ private:
 
 public:
 	enum class PainterType {D2D1_Painter};
-	enum Sprites:char {Picture = 0};
+	enum Sprites:char {Image = 0, Rectangle};
 
 	ExampleFactory(HWND hWnd, PainterType painterType = PainterType::D2D1_Painter) :m_hWnd{hWnd} {
 		//Set painter object
@@ -118,6 +124,10 @@ public:
 		m_currentMoveBehavior = m_moveBehaviors[MoveBehaviors::AutoMove];
 		//Add sprites
 		//m_sprites.push_back(new )
+		m_sprites[Sprites::Rectangle] = new RectangleSprite(m_painter, startObjectRect, { 0.7,0.3,0.6,1.0 });
+		m_sprites[Sprites::Image] = new ImageSprite(m_painter, startObjectRect, TEST_IMAGE_FILE);
+		//m_currentSprite = m_sprites.back();
+		m_currentSprite = m_sprites[Sprites::Image];
 		//Start timer
 		m_timer.Reset();
 	};
@@ -147,10 +157,14 @@ public:
 	void Draw() {
 		ConfigDrawingParams();
 		m_painter->StartDraw();
-		m_painter->SetBrushColor({ 0.5,0.2,0.3,1.0 });
+		//m_painter->SetBrushColor({ 0.5,0.2,0.3,1.0 });
 
 		m_currentMoveBehavior->RefreshRectCoords();
-		m_painter->Rectangle(m_currentMoveBehavior->GetObjectRect());
+		m_currentSprite->SetSpriteRect(m_currentMoveBehavior->GetObjectRect());
+		m_currentSprite->Draw();
+		//m_painter->Rectangle(m_currentMoveBehavior->GetObjectRect());
+
+
 		//m_painter->DrawImage(bmp, m_currentMoveBehavior->GetObjectRect());
 		m_painter->EndDraw();
 		m_painter->InvalidateDrawArea();
@@ -164,12 +178,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 
 	switch (uMsg) {
 	case WM_CREATE:
-		//painter = new PainterD2D1{ hWnd };
-		//bmp = painter->LoadImageFromFile(L"Picture.png");
-		//GetClientRect(hWnd, &clientRect);
-		//mouseMoveBehavior = new MouseMoveBehavior(clientRect, startObjectRect);
-		//currentMoveBehavior = mouseMoveBehavior;
-
 		applicationFactory = new ExampleFactory(hWnd);
 		break;
 

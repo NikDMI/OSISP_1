@@ -19,12 +19,15 @@
     <Filter Include="Исходные файлы\MoveBehavior">
       <UniqueIdentifier>{e199f5a2-8ef6-4931-a1d4-b76e0d7a1cc7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Файлы заголовков\Sprites">
+      <UniqueIdentifier>{861d0d4f-3da7-49af-837c-e5169bb61649}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Sprites">
+      <UniqueIdentifier>{70623557-d426-48da-9fdc-86ae09bb2512}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="OSISP_1.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="Sprite.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="Painter.cpp">
@@ -45,11 +48,17 @@
     <ClCompile Include="MoveBehavior\StaticMoveBehavior.cpp">
       <Filter>Исходные файлы\MoveBehavior</Filter>
     </ClCompile>
+    <ClCompile Include="Sprite.cpp">
+      <Filter>Исходные файлы\Sprites</Filter>
+    </ClCompile>
+    <ClCompile Include="Sprites\RectangleSprite.cpp">
+      <Filter>Исходные файлы\Sprites</Filter>
+    </ClCompile>
+    <ClCompile Include="Sprites\Image.cpp">
+      <Filter>Исходные файлы\Sprites</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Sprite.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
     <ClInclude Include="Config.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
@@ -70,6 +79,15 @@
     </ClInclude>
     <ClInclude Include="MoveBehavior\StaticMoveBehaviour.h">
       <Filter>Файлы заголовков\MoveBehaviors</Filter>
+    </ClInclude>
+    <ClInclude Include="Sprite.h">
+      <Filter>Файлы заголовков\Sprites</Filter>
+    </ClInclude>
+    <ClInclude Include="Sprites\RectangleSprite.h">
+      <Filter>Файлы заголовков\Sprites</Filter>
+    </ClInclude>
+    <ClInclude Include="Sprites\ImageSprite.h">
+      <Filter>Файлы заголовков\Sprites</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
