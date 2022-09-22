@@ -13,6 +13,7 @@ using namespace LAB1;
 
 const std::wstring CLASS_NAME = L"Class1";
 const INT KEY_MOVE_OFFSET = 5;
+const double WHEEL_SENSETIVE = 40; //number of pixels to "rotate" wheel
 
 LRESULT CALLBACK WndProc(HWND,UINT,WPARAM,LPARAM);
 
@@ -157,27 +158,23 @@ public:
 };
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
-	static Painter* painter;
-	static BITMAP_HANDLE bmp;
-	static MoveBehavior* currentMoveBehavior;
-	static MouseMoveBehavior* mouseMoveBehavior;
-	RECT clientRect;
-
+	
+	double wheelCount;
 	static ExampleFactory* applicationFactory;
 
 	switch (uMsg) {
 	case WM_CREATE:
-		painter = new PainterD2D1{ hWnd };
-		bmp = painter->LoadImageFromFile(L"Picture.png");
-		GetClientRect(hWnd, &clientRect);
-		mouseMoveBehavior = new MouseMoveBehavior(clientRect, startObjectRect);
-		currentMoveBehavior = mouseMoveBehavior;
+		//painter = new PainterD2D1{ hWnd };
+		//bmp = painter->LoadImageFromFile(L"Picture.png");
+		//GetClientRect(hWnd, &clientRect);
+		//mouseMoveBehavior = new MouseMoveBehavior(clientRect, startObjectRect);
+		//currentMoveBehavior = mouseMoveBehavior;
 
 		applicationFactory = new ExampleFactory(hWnd);
 		break;
 
 	case WM_SIZE:
-		painter->Resize(LOWORD(lParam), HIWORD(lParam));
+		//painter->Resize(LOWORD(lParam), HIWORD(lParam));
 		break;
 
 	case WM_PAINT:
@@ -220,6 +217,16 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 		case 'a':
 			applicationFactory->StaticMoveObject(-KEY_MOVE_OFFSET, 0);
 			break;
+		}
+		break;
+
+	case WM_MOUSEWHEEL:
+		wheelCount = ((double)GET_WHEEL_DELTA_WPARAM(wParam)/WHEEL_DELTA)*WHEEL_SENSETIVE;
+		if (LOWORD(wParam) == MK_SHIFT) {
+			applicationFactory->StaticMoveObject(wheelCount, 0);
+		}
+		else {
+			applicationFactory->StaticMoveObject(0, wheelCount);
 		}
 		break;
 
