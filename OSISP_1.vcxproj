@@ -140,6 +140,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Moveable.cpp" />
+    <ClCompile Include="MoveBehavior\AutoMoveBehaviour.cpp" />
+    <ClCompile Include="MoveBehavior\MouseMoveBehaviour.cpp" />
+    <ClCompile Include="MoveBehavior\StaticMoveBehavior.cpp" />
     <ClCompile Include="OSISP_1.cpp" />
     <ClCompile Include="Painter.cpp" />
     <ClCompile Include="Sprite.cpp" />
@@ -148,6 +151,9 @@
   <ItemGroup>
     <ClInclude Include="Config.h" />
     <ClInclude Include="Moveable.h" />
+    <ClInclude Include="MoveBehavior\AutoMoveBehaviour.h" />
+    <ClInclude Include="MoveBehavior\MouseMoveBehaviour.h" />
+    <ClInclude Include="MoveBehavior\StaticMoveBehaviour.h" />
     <ClInclude Include="Painter.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Timer.h" />
