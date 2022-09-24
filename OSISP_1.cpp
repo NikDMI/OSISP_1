@@ -20,6 +20,7 @@ const double WHEEL_SENSETIVE = 40; //number of pixels to "rotate" wheel
 
 LRESULT CALLBACK WndProc(HWND,UINT,WPARAM,LPARAM);
 
+
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdLine) {
 	InitApplication();
 	WNDCLASSEX wc;
@@ -123,10 +124,8 @@ public:
 		((AutoMoveBehavior*)m_moveBehaviors[MoveBehaviors::AutoMove])->StartMoving();
 		m_currentMoveBehavior = m_moveBehaviors[MoveBehaviors::AutoMove];
 		//Add sprites
-		//m_sprites.push_back(new )
 		m_sprites[Sprites::Rectangle] = new RectangleSprite(m_painter, startObjectRect, { 0.7,0.3,0.6,1.0 });
 		m_sprites[Sprites::Image] = new ImageSprite(m_painter, startObjectRect, TEST_IMAGE_FILE);
-		//m_currentSprite = m_sprites.back();
 		m_currentSprite = m_sprites[Sprites::Image];
 		//Start timer
 		m_timer.Reset();
@@ -134,12 +133,10 @@ public:
 
 	void CaptureMouse() {
 		ChangeMoveBehaviour(MoveBehaviors::Mouse);
-		//((MouseMoveBehavior*)m_currentMoveBehavior)->CaptureMouseCoord();
 	}
 
 	void ReleaseCapture() {
 		ChangeMoveBehaviour(MoveBehaviors::AutoMove);
-		//((AutoMoveBehavior*)m_currentMoveBehavior)->StartMoving();
 		m_painter->InvalidateDrawArea();
 	}
 
@@ -154,18 +151,31 @@ public:
 		m_painter->InvalidateDrawArea();
 	}
 
+	void SetSprite(Sprites sprite) {
+		m_currentSprite = m_sprites[sprite];
+		m_painter->InvalidateDrawArea();
+	}
+
+	void ResizeClientRect(RECT rect) {
+		m_painter->Resize(rect.right - rect.left, rect.bottom - rect.top);
+		for (auto moveBehaviour : m_moveBehaviors) {
+			try {
+				moveBehaviour->SetClientRect(rect);
+			}
+			catch (...) {
+				return;
+			}
+		}
+	}
+
 	void Draw() {
 		ConfigDrawingParams();
 		m_painter->StartDraw();
-		//m_painter->SetBrushColor({ 0.5,0.2,0.3,1.0 });
 
 		m_currentMoveBehavior->RefreshRectCoords();
 		m_currentSprite->SetSpriteRect(m_currentMoveBehavior->GetObjectRect());
 		m_currentSprite->Draw();
-		//m_painter->Rectangle(m_currentMoveBehavior->GetObjectRect());
 
-
-		//m_painter->DrawImage(bmp, m_currentMoveBehavior->GetObjectRect());
 		m_painter->EndDraw();
 		m_painter->InvalidateDrawArea();
 	}
@@ -174,6 +184,7 @@ public:
 LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 	
 	double wheelCount;
+	RECT clientRect;
 	static ExampleFactory* applicationFactory;
 
 	switch (uMsg) {
@@ -182,6 +193,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 		break;
 
 	case WM_SIZE:
+		clientRect = RECT{ 0,0,LOWORD(lParam), HIWORD(lParam) };
+		applicationFactory->ResizeClientRect(clientRect);
 		//painter->Resize(LOWORD(lParam), HIWORD(lParam));
 		break;
 
@@ -224,6 +237,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 		case 'A':
 		case 'a':
 			applicationFactory->StaticMoveObject(-KEY_MOVE_OFFSET, 0);
+			break;
+		case '1':
+			applicationFactory->SetSprite(ExampleFactory::Sprites::Image);
+			break;
+		case '2':
+			applicationFactory->SetSprite(ExampleFactory::Sprites::Rectangle);
 			break;
 		}
 		break;

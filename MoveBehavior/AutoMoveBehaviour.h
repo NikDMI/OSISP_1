@@ -6,8 +6,8 @@ namespace LAB1 {
 
 	class AutoMoveBehavior : public MoveBehavior {
 	private:
-		double m_maxVerticalSpeed = 700.0f;//speed per second
-		double m_maxHorizontalSpeed = 700.0f;
+		double m_maxVerticalSpeed = 1500.0f;//speed per second
+		double m_maxHorizontalSpeed = 500.0f;
 		double m_verticalSpeed = m_maxVerticalSpeed;//speed per second
 		double m_horizontalSpeed = m_maxHorizontalSpeed;
 		Timer timer{};

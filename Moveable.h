@@ -33,6 +33,7 @@ namespace LAB1 {
 		virtual void RefreshRectCoords() = 0;
 		const RECT& GetObjectRect() const { return m_ObjectRect; }
 		void SetObjectRect(RECT rect);
+		void SetClientRect(RECT rect);
 	};
 
 }

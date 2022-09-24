@@ -23,7 +23,6 @@ namespace LAB1 {
 		m_ObjectRectHeight = rectHeight;
 		m_ObjectRectWidth = rectWidth;
 		m_ObjectRect = objectRect;
-
 	}
 
 	MoveBehavior::ClipResult MoveBehavior::SetValidObjectRect() {
@@ -58,6 +57,18 @@ namespace LAB1 {
 	void MoveBehavior::SetObjectRect(RECT rect) {
 		CheckObjectRect(rect);
 		SetValidObjectRect();
+	}
+
+	void MoveBehavior::SetClientRect(RECT rect) {
+		RECT tempRect = this->m_ClientRect;
+		this->m_ClientRect = rect;
+		try {
+			CheckObjectRect(this->m_ObjectRect);
+		}
+		catch (...) {
+			this->m_ClientRect = tempRect;
+			throw;
+		}
 	}
 
 }
